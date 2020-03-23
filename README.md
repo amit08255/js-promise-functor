@@ -15,6 +15,20 @@ Task.of(axios.post(apiPoint, {"key": "1234"}), true).fork((err) => console.log("
 
 In above example, `Task` utility static method `of` creates a task object with given data or value. Second parameter specifies whether the first parameter is a Promise. When a promise is provided, next functions provided in object is called after the promise is finished.
 
+
+## Example 2 --
+
+```js
+import axios from 'axios';
+import {Task} from "index";
+
+const apiPoint = "https://example.com/api/123";
+
+Task.of(axios.post(apiPoint, {"ipAddress": "1"}), true).map(resp => console.log("first called: ", resp)).fork((err) => console.log("error: ", err), (resp) => console.log("second called: ", resp))
+```
+
+In above example, we are creating promise task, when promise is fulfilled, the function provided in `map` is executed, and then the value returned is passed to function provided inside `fork` (if no error was occurred).
+
 * **of(x, isPromise)** -- Creates Task object and executes with given function or value. The value can also be a Promise.
 
 * **fork(reject, resolve)** -- Use this function at last to handle final data or error. Both parameters must be a function. The  *reject* is called when error is occurred otherwise *resolve* is called.
